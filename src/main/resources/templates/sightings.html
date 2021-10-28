@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Superhero Sightings</title>
+</head>
+
+<body>
+    <!-- Main Body of Page -->
+    <div class="container">
+        <!--Navbar-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="col text-center border border-dark">
+                <h1><a href="/" class="text-dark">Superhero Sightings 👀</a></h1>
+            </div>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/heroes">Heroes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/superpowers">Superpowers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/locations">Locations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/organizations">Organizations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/sightings">Sightings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Add Form -->
+        <div class="row m-4 border border-dark">
+            <div class="col-12 m-1 text-center" th:if="${!errors.isEmpty()}">
+                <p class="alert alert-danger" th:each="error : ${errors}" th:text="${error.message}">Error message</p>
+            </div>
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Sighting</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="addSighting" method="POST">
+                    <div class="form-group row">
+                        <label for="location" class="col-3 col-form-label">
+                            Location</label>
+                        <div class="col-9">
+                            <select id="location" name="locationId" class="form-control">
+                                <option th:each="location : ${locations}" th:value="${location.id}"
+                                    th:text="${location.name}">
+                                    Location</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="date" class="col-3 col-form-label">
+                            Date</label>
+                        <div class="col-9">
+                            <input type="date" name="dateString" id="date" class="form-control" value="2021-10-27" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="heroes" class="col-3 col-form-label">
+                            Heroes</label>
+                        <div class="col-9">
+                            <select multiple id="heroes" name="heroIds" class="form-control" required>
+                                <option th:each="hero : ${heroes}" th:value="${hero.id}" th:text="${hero.name}">
+                                    Hero</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Sighitng</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="row m-4 border border-dark">
+            <!-- Search by Date -->
+            <div class="col-4 text-center m-3">
+                <span class="h3">Search Sighting</span>
+                <form action="displaySightingsByDate" method="GET">
+                    <div class="form-group row">
+                        <label for="date" class="col-3 col-form-label">
+                            Date</label>
+                        <div class="col-9">
+                            <input type="date" name="date" id="date" class="form-control" value="2021/10/27" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="/sightings" class="btn btn-secondary">Reset</a>
+                </form>
+            </div>
+            <!-- Table -->
+            <div class="col-7 text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.id}">Sighting ID</td>
+                            <td th:text='${sighting.location.name}'>Location</td>
+                            <td th:text='${sighting.date}'>Date</td>
+                            <td><a href="#" class="btn btn-info"
+                                    th:href="@{/sightingDetail(id=${sighting.id})}">Details</a></td>
+                            <td><a href="#" class="btn btn-primary"
+                                    th:href="@{/editSighting(id=${sighting.id})}">Edit</a></td>
+                            <td><a href="#" class="btn btn-danger"
+                                    th:onclick="|confirmDelete(${sighting.id})|">Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- End main body -->
+
+    <!-- Optional JavaScript -->
+    <script>
+        function confirmDelete(id) {
+            var selection = confirm("Are you sure you want to delete Entry " + id + "?");
+            if (selection == true) {
+                window.location.href = "/deleteSighting?id=" + id;
+                alert("Deletion success");
+            }
+        }
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

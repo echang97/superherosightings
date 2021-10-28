@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<title>Superhero Sightings</title>
+</head>
+
+<body>
+	<!-- Main Body of Page -->
+	<div class="container">
+		<!--Navbar-->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="col text-center border border-dark">
+				<h1><a href="/" class="text-dark">Superhero Sightings 👀</a></h1>
+			</div>
+			<ul class="nav justify-content-center">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/heroes">Heroes</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/superpowers">Superpowers</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/locations">Locations</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/organizations">Organizations</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/sightings">Sightings</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Add Form -->
+		<div class="row m-4 border border-dark">
+			<div class="col-3 text-center m-3">
+				<span class="h3">Add Superpower</span>
+			</div>
+			<div class="col-7 text-center m-3">
+				<form action="addSuperpower" method="POST">
+					<div class="form-group row">
+						<label for="name" class="col-3 col-form-label">
+							Name</label>
+						<div class="col-9">
+							<input type="text" name="name" id="name" class="form-control" maxlength=25 required />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="description" class="col-3 col-form-label">
+							Description</label>
+						<div class="col-9">
+							<input type="text" name="description" id="description" class="form-control" maxlength=150 />
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Add Superpower</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- Table -->
+		<div class="row m-4 border border-dark">
+			<div class="col text-center m-3">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="superpower : ${superpowers}">
+							<td th:text="${superpower.id}">Superpower ID</td>
+							<td th:text='${superpower.name}'>Superpower Name</td>
+							<td th:text="${superpower.description}">Description</td>
+							<td><a href="#" class="btn btn-primary"
+									th:href="@{/editSuperpower(id=${superpower.id})}">Edit</a></td>
+							<td><a href="#" class="btn btn-danger"
+									th:onclick="|confirmDelete(${superpower.id})|">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- End main body -->
+
+	<!-- Optional JavaScript -->
+	<script>
+		function confirmDelete(id) {
+			var selection = confirm("Are you sure you want to delete Entry " + id + "?");
+			if (selection == true) {
+				window.location.href = "/deleteSuperpower?id=" + id;
+				alert("Deletion success");
+			}
+		}
+	</script>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
