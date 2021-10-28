@@ -10,7 +10,7 @@ There are superheroes in our midst! Report any sightings you see on this web app
 
 Be sure you know who, where and when the event happened. If a hero, location, or organization is missing please add them to our database.
 
-More elaborate details on implementation will be in the wiki.
+More elaborate details on implementation will be in the [wiki](https://github.com/echang97/superherosightings/wiki).
 
 ## Assumptions
 * Last 10 Sightings should be sorted by date, then id
