@@ -132,6 +132,16 @@ public class SightingDaoDB implements SightingDao{
     }
     
     @Override
+    public List<Sighting> getSightingsForHero(Hero hero){
+        final String SELECT_SIGHTING_FOR_HERO = "SELECT * FROM sighting "
+                + "JOIN heroSighting hs ON hs.sightingId = sighting.id "
+                + "WHERE hs.heroId = ?";
+        List<Sighting> sightings = jdbc.query(SELECT_SIGHTING_FOR_HERO, new SightingMapper(), hero.getId());
+        associateHeroesAndLocation(sightings);
+        return sightings;
+    }
+    
+    @Override
     public List<Sighting> getSightingsForDate(LocalDate date){
         final String SELECT_SIGHTINGS_FOR_DATE = "SELECT * FROM sighting WHERE date = ?;";
         List<Sighting> sightings = jdbc.query(SELECT_SIGHTINGS_FOR_DATE, new SightingMapper(), date);

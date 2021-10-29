@@ -13,6 +13,7 @@ import com.e.superherosightings.dao.SuperpowerDao;
 import com.e.superherosightings.dto.Hero;
 import com.e.superherosightings.dto.Location;
 import com.e.superherosightings.dto.Organization;
+import com.e.superherosightings.dto.Sighting;
 import com.e.superherosightings.dto.Superpower;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -92,6 +93,22 @@ public class HeroController {
     
     @GetMapping("deleteHero")
     public String deleteHero(Integer id){
+        Hero hero = heroDao.getHeroById(id);
+        
+        List<Organization> orgs = organizationDao.getOrganizationsForHero(hero);
+        for(Organization org : orgs){
+            if(org.getHeroes().size() <= 1){
+                organizationDao.deleteOrganization(org.getId());
+            }
+        }
+        
+        List<Sighting> sightings  = sightingDao.getSightingsForHero(hero);
+        for(Sighting sighting : sightings){
+            if(sighting.getHeroes().size() <= 1){
+                sightingDao.deleteSighting(sighting.getId());
+            }
+        }
+        
         heroDao.deleteHero(id);
         return "redirect:/heroes";
     }
