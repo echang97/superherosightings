@@ -38,5 +38,5 @@ More elaborate details on implementation will be in the [wiki](https://github.co
     * Would have to look up more documentation (and possibly more packages)
 * Input Validation limited
 * Hero details does not specify sighting id
-* Empty Organizations and Sightings should be deleted
+* ~Empty Organizations and Sightings should be deleted~ Resolved on 10/29/2021
 * Website could look nicer
