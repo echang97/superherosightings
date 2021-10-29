@@ -5,6 +5,7 @@
  */
 package com.e.superherosightings.dao;
 
+import com.e.superherosightings.dto.Hero;
 import com.e.superherosightings.dto.Sighting;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +21,7 @@ public interface SightingDao {
     void updateSighting(Sighting sighting);
     void deleteSighting(int id);
     
+    List<Sighting> getSightingsForHero(Hero hero);
     List<Sighting> getSightingsForDate(LocalDate date);
     List<Sighting> getLastTenSightings();
 }
